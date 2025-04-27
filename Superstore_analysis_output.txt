@@ -1,0 +1,392 @@
+DATABASE : superstore
+
+1=> SHOW TABLES;
++----------------------+
+| Tables_in_superstore |
++----------------------+
+| customers            |
+| orders               |
+| products             |
++----------------------+
+3 rows in set
+
+2=> DESCRIBE customers;
++---------------    +--------------+------+-----+---------+-------+
+| Field                  | Type             | Null | Key | Default | Extra |
++---------------    +--------------+------+-----+---------+-------+
+| customer_id      | varchar(10) | NO   | PRI | NULL    |       |
+| customer_name| varchar(100)| YES  |       | NULL    |       |
+| segment             | varchar(50) | YES  |        | NULL    |       |
+| country              | varchar(50) | YES  |        | NULL    |       |
+| city                     | varchar(50) | YES  |       | NULL    |       |
+| state                   | varchar(50) | YES  |        | NULL    |       |
+| postal_code      | varchar(10) | YES  |         | NULL    |       |
+| region               | varchar(50) | YES  |          | NULL    |       |
++---------------   +--------------+------+----- +---------+-------+
+8 rows in set
+
+3=>DESCRIBE products;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| product_id   | varchar(15)  | NO   | PRI | NULL    |       |
+| category     | varchar(50)  | YES  |     | NULL    |       |
+| sub_category | varchar(50)  | YES  |     | NULL    |       |
+| product_name | varchar(255) | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+4 rows in set
+
+4=>DESCRIBE orders;
++-------------+---------------+------+-----+---------+-------+
+| Field           | Type              | Null | Key | Default | Extra |
++-------------+---------------+------+-----+---------+-------+
+| order_id    | varchar(15)   | YES  |         | NULL    |       |
+| order_date  | date              | YES  |          | NULL    |       |
+| ship_date   | date               | YES  |         | NULL    |       |
+| ship_mode   | varchar(50) | YES  |        | NULL    |       |
+| customer_id | varchar(10) | YES  | MUL | NULL    |       |
+| product_id  | varchar(15)   | YES  | MUL | NULL    |       |
+| sales       | decimal(10,2)    | YES  |     | NULL    |       |
+| quantity    | int                     | YES  |     | NULL    |       |
+| discount    | decimal(4,2)    | YES  |     | NULL    |       |
+| profit      | decimal(10,2)     | YES  |     | NULL    |       |
++-------------+---------------+------+-----+---------+-------+
+10 rows in set
+
+5=>SELECT * FROM customers;
++-------------+------------------+-------------+---------+-------------+---------------+-------------+---------+
+| customer_id | customer_name    | segment     | country | city        | state         | postal_code | region  |
++-------------+------------------+-------------+---------+-------------+---------------+-------------+---------+
+| CO10        | Olivia Taylor    | Consumer    | USA     | Atlanta     | Georgia       | 30301       | South   |
+| CO11        | Ethan Jones      | Consumer    | USA     | Dallas      | Texas         | 75001       | South   |
+| CO12        | James Wyatt      | Home Office | USA     | Portland    | Oregon        | 97035       | West    |
+| CO13        | Sophia Thomas    | Consumer    | USA     | Los Angeles | California    | 97001       | West    |
+| CO14        | Mia Martin       | Corporate   | USA     | Austin      | Texas         | 73101       | South   |
+| CO15        | Ryan Harris      | Home Office | USA     | Los Angeles | California    | 97010       | West    |
+| COO1        | John Smith       | Consumer    | USA     | Los Angeles | California    | 90001       | West    |
+| COO2        | Emily Johnson    | Corporate   | USA     | New York    | New York      | 10001       | East    |
+| COO3        | Michael Brown    | Home Office | USA     | Chicago     | Illnois       | 60601       | Central |
+| COO4        | Jessica Williams | Consumer    | USA     | Seattle     | Washington    | 98101       | West    |
+| COO5        | Dylan Jones      | Corporate   | USA     | Houston     | Texas         | 77001       | South   |
+| COO6        | Sarah Davis      | Consumer    | USA     | Miami       | Florida       | 33101       | South   |
+| COO7        | David Miller     | Home Office | USA     | Denver      | Colorado      | 80201       | West    |
+| COO8        | Laura Wilson     | Consumer    | USA     | Boston      | Massachusetss | 02101       | East    |
+| COO9        | James Moore      | Corporate   | USA     | San Diego   | California    | 92101       | West    |
++-------------+------------------+-------------+---------+-------------+---------------+-------------+---------+
+15 rows in set
+
+6=> SELECT * FROM products;
++------------+-----------------+--------------+----------------------+
+| product_id | category        | sub_category | product_name         |
++------------+-----------------+--------------+----------------------+
+| P001       | Furniture       | Chair        | Egonomic Chair       |
+| P002       | Office Supplies | Paper        | Copy Paper           |
+| P003       | Office Supplies | Binders      | 3-Ring Binder        |
+| P004       | Technology      | Phones       | iPhone 13            |
+| P005       | Technology      | Accessories  | Wireless Mouse       |
+| P006       | Office Supplies | Storage      | Plastic Storage Bin  |
+| P007       | Office Supplies | Envelops     | Manilla Envelopes    |
+| P008       | Furniture       | Tables       | Office Desk          |
+| P009       | Furniture       | Bookcases    | Wooden Bookcase      |
+| P010       | Technology      | Machines     | HP Printer           |
+| P011       | Technology      | Phones       | Samsung Galaxy S22   |
+| P012       | Furniture       | Chair        | Leather Chair        |
+| P013       | Furniture       | Bookcases    | Metal Bookcase       |
+| P014       | Furniture       | Tables       | Conference Tables    |
+| P015       | Office Supplies | Art          | Watercolor Paint Set |
++------------+-----------------+--------------+----------------------+
+15 rows in set
+
+7=> SELECT * FROM orders;
++----------+------------+------------+----------------+-------------+------------+--------+----------+----------+--------+
+| order_id | order_date | ship_date  | ship_mode      | customer_id | product_id | sales  | quantity | discount | profit |
++----------+------------+------------+----------------+-------------+------------+--------+----------+----------+--------+
+| O001     | 2023-01-10 | 2023-01-13 | Second Class   | COO1        | P001       | 250.00 |        2 |     0.10 |  50.00 |
+| O002     | 2023-01-21 | 2023-01-24 | First Class    | COO2        | P005       | 999.99 |        2 |     0.00 | 100.00 |
+| O003     | 2023-02-10 | 2023-02-14 | Standard Class | COO3        | P003       |  30.00 |        3 |     0.05 |  30.00 |
+| O004     | 2023-03-15 | 2023-03-18 | Second Class   | COO4        | P006       |  70.00 |        1 |     0.10 |  10.00 |
+| O005     | 2023-04-10 | 2023-04-13 | Second Class   | COO5        | P007       | 100.00 |        2 |     0.10 |  40.00 |
+| O006     | 2023-04-28 | 2023-05-02 | First Class    | COO6        | P002       | 300.00 |        1 |     0.10 |  80.00 |
+| O007     | 2023-05-19 | 2023-05-22 | First Class    | COO7        | P004       | 900.00 |        1 |     0.10 | 100.00 |
+| O008     | 2023-06-04 | 2023-04-07 | Second Class   | COO8        | P008       | 300.00 |        1 |     0.15 |  70.00 |
+| O009     | 2023-06-26 | 2023-06-29 | First Class    | COO9        | P009       | 600.00 |        1 |     0.10 | 120.00 |
+| O010     | 2023-07-08 | 2023-07-11 | First Class    | CO10        | P010       | 400.00 |        1 |     0.10 |  80.00 |
+| O011     | 2023-07-25 | 2023-07-28 | First Class    | CO11        | P011       | 800.00 |        1 |     0.10 | 100.00 |
+| O012     | 2023-08-10 | 2023-08-13 | Second Class   | CO12        | P012       | 450.00 |        1 |     0.10 |  90.00 |
+| O013     | 2023-08-24 | 2023-08-27 | First Class    | CO12        | P012       | 500.00 |        1 |     0.10 |  75.00 |
+| O014     | 2023-09-10 | 2023-09-14 | First Class    | CO14        | P014       | 700.00 |        1 |     0.00 | 150.00 |
+| O015     | 2023-09-20 | 2023-09-23 | Standard Class | CO15        | P015       |  80.00 |        1 |     0.10 |  10.00 |
++----------+------------+------------+----------------+-------------+------------+--------+----------+----------+--------+
+15 rows in set
+
+8=> SELECT * FROM customers WHERE state ='California';
++-------------+---------------+-------------+---------+-------------+------------+-------------+--------+
+| customer_id | customer_name | segment     | country | city        | state      | postal_code | region |
++-------------+---------------+-------------+---------+-------------+------------+-------------+--------+
+| CO13        | Sophia Thomas | Consumer    | USA     | Los Angeles | California | 97001       | West   |
+| CO15        | Ryan Harris   | Home Office | USA     | Los Angeles | California | 97010       | West   |
+| COO1        | John Smith    | Consumer    | USA     | Los Angeles | California | 90001       | West   |
+| COO9        | James Moore   | Corporate   | USA     | San Diego   | California | 92101       | West   |
++-------------+---------------+-------------+---------+-------------+------------+-------------+--------+
+4 rows in set
+
+9=> SELECT * FROM products WHERE category ='Technology';
++------------+------------+--------------+--------------------+
+| product_id | category   | sub_category | product_name       |
++------------+------------+--------------+--------------------+
+| P004       | Technology | Phones       | iPhone 13          |
+| P005       | Technology | Accessories  | Wireless Mouse     |
+| P010       | Technology | Machines     | HP Printer         |
+| P011       | Technology | Phones       | Samsung Galaxy S22 |
++------------+------------+--------------+--------------------+
+4 rows in set
+
+10=> SELECT * FROM orders WHERE ship_mode ='First Class';
++----------+------------+------------+-------------+-------------+------------+--------+----------+----------+--------+
+| order_id | order_date | ship_date  | ship_mode   | customer_id | product_id | sales  | quantity | discount | profit |
++----------+------------+------------+-------------+-------------+------------+--------+----------+----------+--------+
+| O002     | 2023-01-21 | 2023-01-24 | First Class | COO2        | P005       | 999.99 |        2 |     0.00 | 100.00 |
+| O006     | 2023-04-28 | 2023-05-02 | First Class | COO6        | P002       | 300.00 |        1 |     0.10 |  80.00 |
+| O007     | 2023-05-19 | 2023-05-22 | First Class | COO7        | P004       | 900.00 |        1 |     0.10 | 100.00 |
+| O009     | 2023-06-26 | 2023-06-29 | First Class | COO9        | P009       | 600.00 |        1 |     0.10 | 120.00 |
+| O010     | 2023-07-08 | 2023-07-11 | First Class | CO10        | P010       | 400.00 |        1 |     0.10 |  80.00 |
+| O011     | 2023-07-25 | 2023-07-28 | First Class | CO11        | P011       | 800.00 |        1 |     0.10 | 100.00 |
+| O013     | 2023-08-24 | 2023-08-27 | First Class | CO12        | P012       | 500.00 |        1 |     0.10 |  75.00 |
+| O014     | 2023-09-10 | 2023-09-14 | First Class | CO14        | P014       | 700.00 |        1 |     0.00 | 150.00 |
++----------+------------+------------+-------------+-------------+------------+--------+----------+----------+--------+
+8 rows in set
+
+
+
+11=> Total sales by category
+ SELECT p.category, SUM(o.sales) AS total_sales FROM orders o  JOIN products p ON o.product_id =p.product_id GROUP BY p.category;
++-----------------+-------------+
+| category        | total_sales |
++-----------------+-------------+
+| Furniture       |     2800.00 |
+| Technology      |     3099.99 |
+| Office Supplies |      580.00 |
++-----------------+-------------+
+3 rows in set
+
+
+12=>Get customer names and their corresponding orders
+ SELECT c.customer_name ,o.order_id,o.order_date FROM customers c JOIN orders o on c.customer_id=o.customer_id;
++------------------+----------+------------+
+| customer_name    | order_id | order_date |
++------------------+----------+------------+
+| Olivia Taylor    | O010     | 2023-07-08 |
+| Ethan Jones      | O011     | 2023-07-25 |
+| James Wyatt      | O012     | 2023-08-10 |
+| James Wyatt      | O013     | 2023-08-24 |
+| Mia Martin       | O014     | 2023-09-10 |
+| Ryan Harris      | O015     | 2023-09-20 |
+| John Smith       | O001     | 2023-01-10 |
+| Emily Johnson    | O002     | 2023-01-21 |
+| Michael Brown    | O003     | 2023-02-10 |
+| Jessica Williams | O004     | 2023-03-15 |
+| Dylan Jones      | O005     | 2023-04-10 |
+| Sarah Davis      | O006     | 2023-04-28 |
+| David Miller     | O007     | 2023-05-19 |
+| Laura Wilson     | O008     | 2023-06-04 |
+| James Moore      | O009     | 2023-06-26 |
++------------------+----------+------------+
+15 rows in set
+
+
+13=> Top 5 Best selling products on profit 
+ SELECT p.product_name,SUM(o.profit) AS total_profit FROM orders o JOIN products p ON o.product_id=p.product_id GROUP BY p.product_name ORDER BY total_profit DESC LIMIT 5;
++-------------------+--------------+
+| product_name      | total_profit |
++-------------------+--------------+
+| Leather Chair     |       165.00 |
+| Conference Tables |       150.00 |
+| Wooden Bookcase   |       120.00 |
+| Wireless Mouse    |       100.00 |
+| iPhone 13         |       100.00 |
++-------------------+--------------+
+5 rows in set
+
+14=> Monthly sales report
+ SELECT DATE_FORMAT(order_date,'%Y-%m') AS month, SUM(sales) AS total_sales FROM orders GROUP BY DATE_FORMAT(order_date,'%Y-%m') ORDER BY month;
++---------+-------------+
+| month   | total_sales |
++---------+-------------+
+| 2023-01 |     1249.99 |
+| 2023-02 |       30.00 |
+| 2023-03 |       70.00 |
+| 2023-04 |      400.00 |
+| 2023-05 |      900.00 |
+| 2023-06 |      900.00 |
+| 2023-07 |     1200.00 |
+| 2023-08 |      950.00 |
+| 2023-09 |      780.00 |
++---------+-------------+
+9 rows in set
+
+15=> Sales by sub-category
+ SELECT p.sub_category,SUM(o.sales) AS total_sales FROM orders o JOIN products p ON o.product_id=p.product_id GROUP BY p.sub_category ORDER BY total_sales DESC;
++--------------+-------------+
+| sub_category | total_sales |
++--------------+-------------+
+| Phones       |     1700.00 |
+| Chair        |     1200.00 |
+| Tables       |     1000.00 |
+| Accessories  |      999.99 |
+| Bookcases    |      600.00 |
+| Machines     |      400.00 |
+| Paper        |      300.00 |
+| Envelops     |      100.00 |
+| Art          |       80.00 |
+| Storage      |       70.00 |
+| Binders      |       30.00 |
++--------------+-------------+
+11 rows in set
+
+16=> Top 5 customers by total sales
+ SELECT c.customer_name,SUM(o.sales) AS total_sales FROM orders o JOIN customers c ON c.customer_id=o.customer_id GROUP BY c.customer_name ORDER BY total_sales DESC LIMIT 5;
++---------------+-------------+
+| customer_name | total_sales |
++---------------+-------------+
+| Emily Johnson |      999.99 |
+| James Wyatt   |      950.00 |
+| David Miller  |      900.00 |
+| Ethan Jones   |      800.00 |
+| Mia Martin    |      700.00 |
++---------------+-------------+
+5 rows in set 
+
+17=> Region-wise Sales
+ SELECT c.region,SUM(o.sales) AS total_sales FROM orders o JOIN customers c ON c.customer_id=o.customer_id GROUP BY c.region ORDER BY total_sales DESC LIMIT 5;
++---------+-------------+
+| region  | total_sales |
++---------+-------------+
+| West    |     2850.00 |
+| South   |     2300.00 |
+| East    |     1299.99 |
+| Central |       30.00 |
++---------+-------------+
+4 rows in set
+
+
+18=> Top 10 city sales
+
+SELECT c.city,SUM(o.sales) AS total_sales FROM orders o JOIN customers c ON c.customer_id=o.customer_id GROUP BY c.city ORDER BY total_sales DESC LIMIT 10;
++-------------+-------------+
+| city        | total_sales |
++-------------+-------------+
+| New York    |      999.99 |
+| Portland    |      950.00 |
+| Denver      |      900.00 |
+| Dallas      |      800.00 |
+| Austin      |      700.00 |
+| San Diego   |      600.00 |
+| Atlanta     |      400.00 |
+| Los Angeles |      330.00 |
+| Miami       |      300.00 |
+| Boston      |      300.00 |
++-------------+-------------+
+10 rows in set
+
+19=> Top 5 states by profit
+
+ SELECT c.state,SUM(o.profit) AS total_profit FROM orders o JOIN customers c ON c.customer_id=o.customer_id GROUP BY c.state ORDER BY total_profit DESC LIMIT 5;
++------------+--------------+
+| state      | total_profit |
++------------+--------------+
+| Texas      |       290.00 |
+| California |       180.00 |
+| Oregon     |       165.00 |
+| New York   |       100.00 |
+| Colorado   |       100.00 |
++------------+--------------+
+5 rows in set
+
+
+20=>Average discount given by category
+
+ SELECT p.category,AVG(o.discount) AS average_discount FROM orders o JOIN products p ON o.product_id=p.product_id GROUP BY p.category ORDER BY average_discount DESC;
++-----------------+------------------+
+| category        | average_discount |
++-----------------+------------------+
+| Furniture       |         0.091667 |
+| Office Supplies |         0.090000 |
+| Technology      |         0.075000 |
++-----------------+------------------+
+3 rows in set
+
+21=> Customers who bought  more than 2 or more items in single order
+
+ SELECT c.customer_name,SUM(o.quantity) AS total_quantity FROM orders o JOIN customers c ON c.customer_id=o.customer_id GROUP BY c.customer_name HAVING  total_quantity>=2;
++---------------+----------------+
+| customer_name | total_quantity |
++---------------+----------------+
+| John Smith    |              2 |
+| Emily Johnson |              2 |
+| Michael Brown |              3 |
+| Dylan Jones   |              2 |
+| James Wyatt   |              2 |
++---------------+----------------+
+5 rows in set
+
+22=>Total orders for ship modes
+SELECT ship_mode,count(order_id) AS total_orders FROM orders GROUP BY ship_mode ORDER BY total_orders DESC;
++----------------+--------------+
+| ship_mode      | total_orders |
++----------------+--------------+
+| First Class    |            8 |
+| Second Class   |            5 |
+| Standard Class |            2 |
++----------------+--------------+
+3 rows in set
+
+23=> Top ship mode used
+
+SELECT ship_mode,count(order_id) AS total_orders FROM orders GROUP BY ship_mode ORDER BY total_orders DESC LIMIT 1;
++-------------+--------------+
+| ship_mode   | total_orders |
++-------------+--------------+
+| First Class |            8 |
++-------------+--------------+
+1 row in set
+
+24=> Category wise Percentage 
+
+ SELECT p.category,SUM(o.profit)/SUM(o.sales)*100 AS profit_percentage FROM orders o JOIN products p ON o.product_id=p.product_id GROUP BY p.category ORDER BY profit_percentage DESC;
++-----------------+-------------------+
+| category        | profit_percentage |
++-----------------+-------------------+
+| Office Supplies |         29.310345 |
+| Furniture       |         19.821429 |
+| Technology      |         12.258104 |
++-----------------+-------------------+
+3 rows in set
+
+25=> Best and worst performing regions (by profit)
+
+ SELECT c.region,SUM(o.profit) AS total_profit FROM orders o JOIN customers c on c.customer_id=o.customer_id GROUP BY c.region ORDER BY total_profit DESC;
++---------+--------------+
+| region  | total_profit |
++---------+--------------+
+| West    |       455.00 |
+| South   |       450.00 |
+| East    |       170.00 |
+| Central |        30.00 |
++---------+--------------+
+4 rows in set (0.00 sec)
+
+26=> Most days taken for deliveries (top 5)
+ SELECT order_id,DATEDIFF(ship_date,order_date) AS delivery_days FROM orders ORDER BY delivery_days DESC LIMIT 5;
++----------+---------------+
+| order_id | delivery_days |
++----------+---------------+
+| O003     |             4 |
+| O006     |             4 |
+| O014     |             4 |
+| O001     |             3 |
+| O002     |             3 |
++----------+---------------+
+5 rows in set
+
+27=>
+
